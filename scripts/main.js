@@ -2,6 +2,7 @@ import { KinematicPathfinder } from "./pathfinder.js";
 
 const MODULE_ID = "turn-radius-limiter";
 const FLAG_KEY = "turningRadius";
+const FLAG_ENABLED_KEY = "enabled";
 const SETTING_DEFAULT_KEY = "defaultTurningRadiusGridUnits";
 
 Hooks.once("init", () => {
@@ -37,6 +38,10 @@ Hooks.once("setup", () => {
       if (!waypoints || waypoints.length < 2)
         return wrapped(waypoints, options);
       if (!this.actor) return wrapped(waypoints, options);
+
+      // Per-token opt-in: if the enabled flag is falsy (default), skip this module.
+      if (!this.actor.getFlag(MODULE_ID, FLAG_ENABLED_KEY))
+        return wrapped(waypoints, options);
 
       // Collect turning circle radius constraint: Actor Flag -> Global Setting fallback -> Default 1
       const globalDefault =
