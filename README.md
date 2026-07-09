@@ -2,6 +2,12 @@
 
 A Foundry VTT module (v13+) that constrains token movement to respect a minimum turning radius, simulating vehicles, mounts, or any creature that cannot pivot on the spot. When enabled on a token, dragging it to a destination produces a curved arc path rather than a straight diagonal line.
 
+## Installation
+
+To install this module in Foundry VTT, use the following manifest URL in the "Install Module" dialog:
+
+https://github.com/daedalus11069/foundryvtt-turn-radius-limiter/releases/latest/download/module.json
+
 ## Requirements
 
 - Foundry VTT v13 or higher
