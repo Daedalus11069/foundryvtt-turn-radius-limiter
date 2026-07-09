@@ -1,0 +1,10 @@
+{
+  "id": "turn-radius-limiter",
+  "title": "Turn Radius Limiter",
+  "version": "1.0.0",
+  "compatibility": { "minimum": "13", "verified": "14" },
+  "esmodules": ["scripts/main.js"],
+  "relationships": {
+    "requires": [{ "id": "lib-wrapper", "type": "module" }]
+  }
+}
