@@ -6,5 +6,11 @@
   "esmodules": ["scripts/main.js"],
   "relationships": {
     "requires": [{ "id": "lib-wrapper", "type": "module" }]
-  }
+  },
+  "url": "this is auto replaced",
+  "manifest": "this is auto replaced",
+  "download": "this is auto replaced",
+  "readme": "this is auto replaced",
+  "changelog": "this is auto replaced",
+  "bugs": "this is auto replaced"
 }
