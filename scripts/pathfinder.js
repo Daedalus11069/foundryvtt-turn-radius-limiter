@@ -70,7 +70,16 @@ export class KinematicPathfinder {
     const maxAllowedRad = stepDistancePixels / turningRadiusPixels;
     const maxAllowedDeg = maxAllowedRad * (180 / Math.PI);
 
-    const turnIncrements = [-1, -0.5, 0, 0.5, 1].map(f => f * maxAllowedDeg);
+    // Fixed-ish angular spacing between turn options, independent of radius, so
+    // tight radii (large maxAllowedDeg) don't end up with only 5 coarse jumps.
+    // Capped so branching factor - and therefore search cost - stays bounded.
+    const angularResolutionDeg = 3;
+    const rawSteps = Math.round(maxAllowedDeg / angularResolutionDeg);
+    const numSteps = Math.min(10, Math.max(1, rawSteps));
+    const turnIncrements = [];
+    for (let i = -numSteps; i <= numSteps; i++) {
+      turnIncrements.push((i / numSteps) * maxAllowedDeg);
+    }
 
     const normalizedStartHeading = ((initialRotation % 360) + 360) % 360;
     const goalToleranceSq = (stepDistancePixels * 0.6) ** 2;
@@ -80,7 +89,8 @@ export class KinematicPathfinder {
     // into the same state once maxAllowedDeg gets small (wide radii), which
     // silently erases the radius restriction for anything but tight turns.
     const smallestGapDeg = 0.5 * maxAllowedDeg; // gap between adjacent turnIncrements
-    const headingBucketDeg = Math.max(0.5, smallestGapDeg * 0.4);
+    const stepIncrementDeg = maxAllowedDeg / numSteps;
+    const headingBucketDeg = Math.max(0.5, stepIncrementDeg * 0.4);
     const positionBucketPixels = Math.max(2, stepDistancePixels / 2);
 
     const stateKey = (x, y, heading) => {
