@@ -65,7 +65,12 @@ Hooks.once("setup", () => {
             : (completeKinematicPath[completeKinematicPath.length - 1]
                 ?.heading ?? initialRotation);
 
-        const segmentPath = pathfinder.findPath(start, end, currentRotation);
+        // First try to arrive at a cardinal heading (prevents straight diagonal
+        // lines).  If that yields no path (e.g. walls block a cardinal approach)
+        // fall back to accepting any compass heading so the token can still move.
+        const segmentPath =
+          pathfinder.findPath(start, end, currentRotation, true) ??
+          pathfinder.findPath(start, end, currentRotation, false);
 
         if (segmentPath) {
           if (completeKinematicPath.length > 0) segmentPath.shift();
